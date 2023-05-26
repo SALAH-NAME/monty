@@ -1,5 +1,6 @@
-#include "main.h"
+#include "monty.h"
 
+int push_value;
 /**
  * push - Pushes an element to the stack.
  * @stack: top of the stack.
@@ -8,13 +9,14 @@
 void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new = malloc(sizeof(stack_t));
+	(void)line_number;
 
 	if (!new)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
-	new->n = line_number;
+	new->n = push_value;
 	new->prev = NULL;
 	new->next = *stack;
 	if (*stack)
@@ -84,6 +86,7 @@ void handle_file(char *file_name)
 	size_t len = 0;
 	size_t read;
 	char *opcode;
+	char *arg;
 	stack_t *stack = NULL;
 	unsigned int line_number = 0;
 
@@ -100,6 +103,10 @@ void handle_file(char *file_name)
 		opcode = strtok(line, " \n\t\r");
 		if (!opcode || strncmp(opcode, "#", 1) == 0)
 			continue;
+
+		arg = strtok(NULL, " \n\t\r");
+		if (arg != NULL && strcmp(opcode, "push") == 0)
+			push_value = atoi(arg);
 
 		match_opcode(opcode, &stack, line_number);
 	}
