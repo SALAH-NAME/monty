@@ -76,6 +76,8 @@ void match_opcode(char *opcode, stack_t **stack, unsigned int line_number)
 			return;
 		}
 	}
+	fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+	exit(EXIT_FAILURE);
 }
 
 /**
@@ -111,7 +113,8 @@ void handle_file(char *file_name, stack_t **stack)
 		arg = strtok(NULL, " \n\t\r");
 		push_value = INT_MIN;
 		if (arg != NULL && strcmp(opcode, "push") == 0)
-			push_value = atoi(arg);
+			if (is_valid_int(arg))
+				push_value = atoi(arg);
 
 		match_opcode(opcode, stack, line_number);
 	}
