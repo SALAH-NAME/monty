@@ -14,11 +14,14 @@ void push(stack_t **stack, unsigned int line_number)
 	if (!new)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 	if (push_value == INT_MIN)
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
+		free(new);
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 	new->n = push_value;
