@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 extern int push_value;
 
@@ -48,6 +49,6 @@ void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 void match_opcode(char *opcode, stack_t **stack, unsigned int line_number);
-void handle_file(char *file_name);
-
+void handle_file(char *file_name, stack_t **stack);
+void free_stack(stack_t **stack);
 #endif

@@ -16,6 +16,11 @@ void push(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
+	if (push_value == INT_MIN)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 	new->n = push_value;
 	new->prev = NULL;
 	new->next = *stack;
@@ -68,7 +73,7 @@ void match_opcode(char *opcode, stack_t **stack, unsigned int line_number)
 		if (strcmp(opcode, instructions[i].opcode) == 0)
 		{
 			instructions[i].f(stack, line_number);
-			break;
+			return;
 		}
 	}
 }
@@ -79,7 +84,7 @@ void match_opcode(char *opcode, stack_t **stack, unsigned int line_number)
  *
  * Return: void
  */
-void handle_file(char *file_name)
+void handle_file(char *file_name, stack_t **stack)
 {
 	FILE *fp;
 	char *line = NULL;
@@ -87,7 +92,6 @@ void handle_file(char *file_name)
 	size_t read;
 	char *opcode;
 	char *arg;
-	stack_t *stack = NULL;
 	unsigned int line_number = 0;
 
 	fp = fopen(file_name, "r");
@@ -105,12 +109,29 @@ void handle_file(char *file_name)
 			continue;
 
 		arg = strtok(NULL, " \n\t\r");
+		push_value = INT_MIN;
 		if (arg != NULL && strcmp(opcode, "push") == 0)
 			push_value = atoi(arg);
 
-		match_opcode(opcode, &stack, line_number);
+		match_opcode(opcode, stack, line_number);
 	}
 
 	free(line);
 	fclose(fp);
+}
+/**
+ * free_stack - free all stack
+ * @stack: Top of the stack
+ * Return: Nothing
+ */
+void free_stack(stack_t **stack)
+{
+	stack_t *temp;
+
+	while (*stack)
+	{
+		temp = *stack;
+		*stack = (*stack)->next;
+		free(temp);
+	}
 }
