@@ -52,5 +52,6 @@ void match_opcode(char *opcode, stack_t **stack, unsigned int line_number);
 void handle_file(char *file_name, stack_t **stack);
 void free_stack(stack_t **stack);
 int is_valid_int(char *str);
+void sub(stack_t **stack, unsigned int line_number);
 
 #endif

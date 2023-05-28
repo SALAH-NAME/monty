@@ -68,6 +68,7 @@ void match_opcode(char *opcode, stack_t **stack, unsigned int line_number)
 		{"add", add},
 		{"nop", nop},
 		{"pint", pint},
+		{"sub",sub},
 		{NULL, NULL}
 	};
 
