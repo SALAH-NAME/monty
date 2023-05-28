@@ -9,16 +9,17 @@
 */
 void pop(stack_t **stack, unsigned int line_number)
 {
+	stack_t *temp;
 	if (!(*stack))
 	{
 		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	if ((*stack)->next)
-	{
-		(*stack)->next->prev = NULL;
-	}
-	(*stack) = (*stack)->next;
+	temp = *stack;
+	*stack = (*stack)->next;
+	if (*stack)
+		(*stack)->prev = NULL;
+	free(temp);
 }
 
 /**
@@ -59,7 +60,7 @@ void add(stack_t **stack, unsigned int line_number)
 {
 	if (!(*stack) || (!(*stack)->next))
 	{
-		fprintf(stderr, "L%u: can't add an empty stack\n", line_number);
+		fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	(*stack)->next->n += (*stack)->n;
