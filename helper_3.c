@@ -19,7 +19,7 @@ int is_valid_int(char *str)
 
 	for (; str[i]; i++)
 	{
-		if (str[i] <= '0' || str[i] >= '9')
+		if (str[i] < '0' || str[i] > '9')
 			return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
